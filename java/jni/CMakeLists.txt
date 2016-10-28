@@ -31,5 +31,11 @@ set_target_properties(
     COMPILE_FLAGS "-Wall -Wextra"
 )
 
+add_custom_command (TARGET javatinyb
+  POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E echo "including jni lib to jar..."
+  WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
+  COMMAND ${Java_JAR_EXECUTABLE} uf ../tinyb.jar libjavatinyb.so -C ../../src libtinyb.so)
+
 install(TARGETS javatinyb LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
 

@@ -34,7 +34,8 @@ public class BluetoothManager
 
     static {
         try {
-            System.loadLibrary("javatinyb");
+            LibLoader.loadLibrary("tinyb");
+            LibLoader.loadLibrary("javatinyb");
         } catch (UnsatisfiedLinkError e) {
             System.err.println("Native code library failed to load.\n" + e);
             System.exit(-1);
@@ -216,9 +217,14 @@ public class BluetoothManager
         {
             inst = new BluetoothManager();
             inst.init();
+
             String nativeAPIVersion = getNativeAPIVersion();
             String APIVersion = BluetoothManager.class.getPackage().getSpecificationVersion();
-            if (APIVersion.equals(nativeAPIVersion) == false) {
+
+            if (APIVersion == null) {
+              System.err.println("Warning : Java library verion cannot be found. Compatibility with native library cannot be assure");
+            }
+            else if (APIVersion.equals(nativeAPIVersion) == false) {
                 String[] nativeAPIVersionCode = nativeAPIVersion.split("\\D");
                 String[] APIVersionCode = APIVersion.split("\\D");
                 if (APIVersionCode[0].equals(nativeAPIVersionCode[0]) == false) {
